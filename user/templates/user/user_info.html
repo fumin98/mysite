@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Who am I{% endblock %}
+{% block nav_home_active %}active{% endblock %}
+
+{% block content %}
+    <div class="containter">
+        <div class="row">
+            <div class="col-xs-4 col-xs-offset-5">
+                {% if user.is_authenticated %}
+                <h2>{{ user.username }}</h2>
+                <ul>
+                    <li>昵称:{{ user.get_nickname }}<a href="{% url 'change_nickname' %}?from={{ request.get_full_path }}">修改昵称</a></li>
+                    <li>email:{% if user.email %} {{ user.email }}{% else %}NoEmail
+                        <a href="{%url 'bind_email'%}?from={{request.get_full_path }}">绑定邮箱</a>{% endif %}
+                    </li>
+                    <li>上一次登陆的时间: {{ user.last_login|date:"Y-m-d H:i:s" }}</li>
+                    <li><a href="">修改密码</a></li>
+                </ul>
+                {% else %}
+                    <span>未登录，跳转到首页....</span>
+                    <script type="text/javascript">
+                        window.location.href = '/'
+                    </script>
+                {% endif %}          
+            </div>
+        </div>
+    </div>    
+{% endblock %}
